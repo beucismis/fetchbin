@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fetchbin"
+dynamic = ["version"]
+description = "Simple sharing for your system's fetch output"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "beucismis", email = "beucismis@tutamail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "uvicorn==0.35.0",
+  "fastapi==0.120.1",
+  "pydantic==2.11.7",
+  "pydantic-settings==2.10.1",
+  "sqlmodel==0.0.27",
+  "itsdangerous==2.2.0",
+  "jinja2==3.1.4",
+  "ansi2html==1.9.2",
+  "shortuuid==1.0.13"
+]
+
+[project.urls]
+Source = "https://github.com/beucismis/fetchbin"
+Issues = "https://github.com/beucismis/fetchbin/issues"
+Documentation = "https://github.com/beucismis/fetchbin#readme"
+
+[tool.hatch.version]
+path = "src/fetchbin/__about__.py"
+
+[tool.hatch.envs.default.scripts]
+format = "black -l 120 . && djlint . --reformat --format-css"
+cli = "PYTHONPATH=src python3 -m fetchbin.cli.main"
+api = "PYTHONPATH=src FETCHBIN_DATA_DIR=data/ uvicorn src.fetchbin.api.main:app --reload"

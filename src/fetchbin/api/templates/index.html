@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>FetchBin - Last Outputs</title>
+        <style>
+            body {
+                font-family: 'Courier New', Courier, monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h3>FetchBin - Last Outputs</h3>
+            <ul>
+                {% for output in outputs %}
+                    <li>
+                        ID: <a href="/c/{{ output.public_id }}">{{ output.public_id }}</a>
+                    </li>
+                {% else %}
+                    <li>Not found!</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </body>
+</html>
