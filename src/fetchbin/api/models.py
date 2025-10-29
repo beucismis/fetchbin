@@ -8,7 +8,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DATA_DIR: ClassVar[str] = os.environ.get("METALSTATS_DATA_DIR", "data/")
+    DATA_DIR: ClassVar[str] = os.environ.get("FETCHBIN_DATA_DIR", "data/")
     DB_FILE: ClassVar[str] = os.path.join(DATA_DIR, "app.db")
 
 
