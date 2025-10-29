@@ -16,6 +16,11 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
+def get_db_session():
+    with Session(engine) as session:
+        yield session
+
+
 class FetchOutput(SQLModel, table=True):
     __tablename__ = "fetch_output"
     __table_args__ = {"extend_existing": True}
