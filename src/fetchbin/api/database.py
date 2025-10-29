@@ -1,4 +1,3 @@
-import random
 from typing import Optional
 from datetime import datetime
 
@@ -26,3 +25,4 @@ class FetchOutput(SQLModel, table=True):
     public_id: str = Field(default_factory=shortuuid.uuid, unique=True, index=True)
     tool_name: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
+    delete_token: str = Field(default_factory=shortuuid.uuid, unique=True, index=True)
