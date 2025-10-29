@@ -97,10 +97,59 @@
         <h3>
             Output ID: {{ public_id }} | <a href="/raw/{{ public_id }}">View Raw</a>
         </h3>
-        <p>Shared at: {{ created_at }}</p>
+        <p>
+            Shared at: {{ created_at }}
+            {% if tool_name %}| Using: <strong>{{ tool_name }}</strong>{% endif %}
+        </p>
+        <div id="vote-widget">
+            <button id="upvote-btn" title="Upvote">▲</button>
+            <span id="score" title="Score">{{ upvotes - downvotes }}</span>
+            <button id="downvote-btn" title="Downvote">▼</button>
+        </div>
+        <p id="vote-message" style="color: #ff6b6b; font-size: 0.9em;"></p>
+        <pre class="terminal-output">{{ html_content | safe }}</pre>
         <p>
             <a href="/delete/{{ delete_token }}">Delete this share</a>
         </p>
-        <pre class="terminal-output">{{ html_content | safe }}</pre>
+        <script>
+        const upvoteBtn = document.getElementById('upvote-btn');
+        const downvoteBtn = document.getElementById('downvote-btn');
+        const scoreEl = document.getElementById('score');
+        const messageEl = document.getElementById('vote-message');
+        const publicId = '{{ public_id }}';
+
+        upvoteBtn.addEventListener('click', async () => {
+            await vote('upvote');
+        });
+
+        downvoteBtn.addEventListener('click', async () => {
+            await vote('downvote');
+        });
+
+        async function vote(voteType) {
+            try {
+                const response = await fetch(`/api/c/${publicId}/${voteType}`, { method: 'POST' });
+                if (response.ok) {
+                    const data = await response.json();
+                    scoreEl.textContent = data.upvotes - data.downvotes;
+                    messageEl.textContent = 'Vote counted!';
+                    messageEl.style.color = '#6bcb77';
+                    disableButtons();
+                } else if (response.status === 409) {
+                    messageEl.textContent = 'You have already voted for this share.';
+                    disableButtons();
+                } else {
+                    messageEl.textContent = 'An error occurred while voting.';
+                }
+            } catch (error) {
+                messageEl.textContent = 'A network error occurred.';
+            }
+        }
+
+        function disableButtons() {
+            upvoteBtn.disabled = true;
+            downvoteBtn.disabled = true;
+        }
+        </script>
     </body>
 </html>
