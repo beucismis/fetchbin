@@ -19,3 +19,4 @@ class HealthCheck(BaseModel):
 
 class ShareRequest(SQLModel):
     content: str
+    tool_name: str | None = None
