@@ -24,7 +24,7 @@ def on_startup():
 @api.post("/api/share", response_class=JSONResponse)
 def share_output(request: models.ShareRequest):
     with Session(database.engine) as session:
-        db_output = database.FetchOutput(content=request.content)
+        db_output = database.FetchOutput(content=request.content, tool_name=request.tool_name)
         session.add(db_output)
         session.commit()
         session.refresh(db_output)
@@ -57,6 +57,9 @@ def view_output(request: Request, public_id: str):
                 "public_id": public_id,
                 "delete_token": db_output.delete_token,
                 "created_at": db_output.created_at.strftime("%Y-%m-%d %H:%M:%S UTC"),
+                "tool_name": db_output.tool_name,
+                "upvotes": db_output.upvotes,
+                "downvotes": db_output.downvotes,
             },
         )
 
@@ -71,6 +74,64 @@ def view_raw_output(public_id: str):
             raise HTTPException(status_code=404, detail="Output not found")
 
         return PlainTextResponse(content=db_output.content)
+
+
+@api.post("/api/c/{public_id}/upvote", response_class=JSONResponse)
+def upvote_output(public_id: str, request: Request):
+    with Session(database.engine) as session:
+        # Find the share
+        share_statement = select(database.FetchOutput).where(database.FetchOutput.public_id == public_id)
+        db_share = session.exec(share_statement).first()
+        if not db_share:
+            raise HTTPException(status_code=404, detail="Share not found")
+
+        # Check if already voted
+        ip_address = request.client.host
+        vote_statement = select(database.Vote).where(
+            database.Vote.share_id == db_share.id,
+            database.Vote.ip_address == ip_address,
+        )
+        existing_vote = session.exec(vote_statement).first()
+        if existing_vote:
+            raise HTTPException(status_code=409, detail="Already voted")
+
+        # Record the vote
+        db_share.upvotes += 1
+        new_vote = database.Vote(share_id=db_share.id, ip_address=ip_address)
+        session.add(new_vote)
+        session.commit()
+        session.refresh(db_share)
+
+        return {"upvotes": db_share.upvotes, "downvotes": db_share.downvotes}
+
+
+@api.post("/api/c/{public_id}/downvote", response_class=JSONResponse)
+def downvote_output(public_id: str, request: Request):
+    with Session(database.engine) as session:
+        # Find the share
+        share_statement = select(database.FetchOutput).where(database.FetchOutput.public_id == public_id)
+        db_share = session.exec(share_statement).first()
+        if not db_share:
+            raise HTTPException(status_code=404, detail="Share not found")
+
+        # Check if already voted
+        ip_address = request.client.host
+        vote_statement = select(database.Vote).where(
+            database.Vote.share_id == db_share.id,
+            database.Vote.ip_address == ip_address,
+        )
+        existing_vote = session.exec(vote_statement).first()
+        if existing_vote:
+            raise HTTPException(status_code=409, detail="Already voted")
+
+        # Record the vote
+        db_share.downvotes += 1
+        new_vote = database.Vote(share_id=db_share.id, ip_address=ip_address)
+        session.add(new_vote)
+        session.commit()
+        session.refresh(db_share)
+
+        return {"upvotes": db_share.upvotes, "downvotes": db_share.downvotes}
 
 
 @api.get("/", response_class=HTMLResponse)
