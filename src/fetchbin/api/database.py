@@ -26,3 +26,11 @@ class FetchOutput(SQLModel, table=True):
     tool_name: Optional[str] = Field(default=None)
     created_at: datetime = Field(default_factory=datetime.utcnow, nullable=False)
     delete_token: str = Field(default_factory=shortuuid.uuid, unique=True, index=True)
+    upvotes: int = Field(default=0)
+    downvotes: int = Field(default=0)
+
+
+class Vote(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    share_id: int = Field(foreign_key="fetch_output.id")
+    ip_address: str = Field(index=True)
