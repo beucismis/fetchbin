@@ -1,0 +1,57 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install hatch
+
+      - name: Run --help command
+        run: hatch run cli --help
+
+      - name: Run --version command
+        run: hatch run cli --version
+
+      - name: Share output and extract delete token
+        id: share
+        run: |
+          output=$(hatch run cli share -s uname -a)
+          echo "$output"
+          delete_url=$(echo "$output" | grep 'Delete URL' | awk '{print $3}')
+
+          if [ -z "$delete_url" ]; then
+            echo "Error: Delete URL not found in the output."
+            exit 1
+          fi
+
+          delete_token=$(basename "$delete_url")
+          echo "delete_token=$delete_token" >> $GITHUB_OUTPUT
+
+      - name: Delete the shared output
+        run: |
+          token="${{ steps.share.outputs.delete_token }}"
+
+          if [ -z "$token" ]; then
+            echo "Error: Delete token is empty."
+            exit 1
+          fi
+
+          echo "Attempting to delete with token: $token"
+          hatch run cli delete "$token"
