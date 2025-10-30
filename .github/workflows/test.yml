@@ -18,22 +18,21 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
+      - name: Install dependencies and package
         run: |
           python -m pip install --upgrade pip
-          pip install hatch
+          pip install -e .
 
       - name: Run --help command
-        run: hatch run cli --help
+        run: fetchbin --help
 
       - name: Run --version command
-        run: hatch run cli --version
+        run: fetchbin --version
 
       - name: Share output and extract delete token
         id: share
         run: |
-          export FETCHBIN_API_URL=https://fetchbin.beucismis.org
-          output=$(hatch run cli share -s uname -a)
+          output=$(fetchbin share -s uname -a)
           echo "$output"
           delete_url=$(echo "$output" | grep 'Delete URL' | awk '{print $3}')
 
@@ -55,5 +54,4 @@ jobs:
           fi
 
           echo "Attempting to delete with token: $token"
-          export FETCHBIN_API_URL=https://fetchbin.beucismis.org
-          hatch run cli delete "$token"
+          fetchbin delete "$token"
