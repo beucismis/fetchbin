@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}FetchBin - Privacy Policy & Terms of Service{% endblock %}
+{% block content %}
+    <h3>Privacy Policy & Terms of Service</h3>
+    <div>
+        <h4 style="margin-top: 1rem; margin-bottom: 1rem;">Information We Collect</h4>
+        <p style="margin-bottom: 0.5rem;">When you use FetchBin, we collect the following information:</p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+            <li>Content you choose to share (command outputs)</li>
+            <li>IP addresses for voting and rate limiting purposes</li>
+            <li>Timestamps of when content is shared</li>
+            <li>Commands associated with your outputs (if provided)</li>
+        </ul>
+        <h4 style="margin-bottom: 0.5rem;">How We Use Your Information</h4>
+        <p style="margin-bottom: 0.5rem;">We use the collected information to:</p>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+            <li>Provide the FetchBin service</li>
+            <li>Prevent abuse and spam through rate limiting</li>
+            <li>Enable the voting system (one vote per IP)</li>
+            <li>Display shared content to other users</li>
+        </ul>
+        <h4 style="margin-bottom: 0.5rem;">Data Sharing</h4>
+        <p style="margin-bottom: 1rem;">
+            We do not sell, trade, or share your personal information with third parties.
+            Your shared content is public by default unless you mark it as hidden.
+            IP addresses are never displayed publicly and are only used for technical purposes.
+        </p>
+        <h4 style="margin-bottom: 0.5rem;">Data Retention</h4>
+        <p style="margin-bottom: 1rem;">
+            Shared content is stored indefinitely unless you delete it using the delete token.
+            You can delete your shares at any time by using the delete URL provided when sharing.
+        </p>
+        <h4 style="margin-bottom: 0.5rem;">Security</h4>
+        <p style="margin-bottom: 1rem;">
+            We implement reasonable security measures to protect your information.
+            However, no method of transmission over the internet is 100% secure.
+        </p>
+        <h4 style="margin-bottom: 0.5rem;">Changes to This Policy</h4>
+        <p style="margin-bottom: 1rem;">
+            We may update this privacy policy from time to time.
+            Changes will be posted on this page with an updated revision date.
+        </p>
+        <h4 style="margin-bottom: 0.5rem;">Contact</h4>
+        <p style="margin-bottom: 1rem;">
+            If you have questions about this privacy policy, please contact us at
+            <a href="https://github.com/beucismis/fetchbin/issues">GitHub Issues</a>.
+        </p>
+    </div>
+{% endblock %}

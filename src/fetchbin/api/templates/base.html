@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block title %}FetchBin{% endblock %}
+        </title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>
+                    <a href="/">FetchBin</a>
+                </h1>
+            </header>
+            <main>
+                {% block content %}{% endblock %}
+            </main>
+            <footer>
+                <div class="site-footer">
+                    <div class="footer-links">
+                        <a href="/about">About</a>
+                        <a href="/privacy">Privacy Policy & Terms of Service</a>
+                    </div>
+                    <div class="footer-copyright">
+                        © <span id="current-year">2025</span> FetchBin. All rights reserved.
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <script src="/static/main.js" defer></script>
+    </body>
+</html>

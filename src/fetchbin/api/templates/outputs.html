@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}FetchBin - Last Outputs{% endblock %}
+{% block content %}
+    <h3>Last Outputs</h3>
+    <p style="margin-top: 0.5rem; margin-bottom: 1rem;">
+        Browse and vote on recently shared command outputs from the community.
+    </p>
+    <div class="filter-bar">
+        <form action="/outputs" method="get">
+            <select name="sort_by" id="sort_by" onchange="this.form.submit()">
+                <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest</option>
+                <option value="upvotes" {% if sort_by == 'upvotes' %}selected{% endif %}>Most Upvoted</option>
+                <option value="downvotes" {% if sort_by == 'downvotes' %}selected{% endif %}>Most Downvoted</option>
+                <option value="score" {% if sort_by == 'score' %}selected{% endif %}>Top Score</option>
+            </select>
+        </form>
+    </div>
+    <div class="outputs-grid">
+        {% for output in outputs %}
+            <div class="output-card" data-public-id="{{ output.public_id }}">
+                <div class="card-header">
+                    <small class="command">{{ output.command or 'N/A' }}</small>
+                </div>
+                <a href="/output/{{ output.public_id }}" class="card-content-link">
+                    <pre class="terminal-output card-preview">{{ output.html_content | safe }}</pre>
+                </a>
+                <div class="card-footer">
+                    <div class="footer-left">
+                        <small class="created-at" data-date="{{ output.created_at }}"></small>
+                    </div>
+                    <div class="vote-widget">
+                        <button class="vote-btn upvote-btn" title="Upvote">⬆</button>
+                        <small class="score" title="Score">{{ output.upvotes - output.downvotes }}</small>
+                        <button class="vote-btn downvote-btn" title="Downvote">⬇</button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No shares found yet!</p>
+        {% endfor %}
+    </div>
+{% endblock %}

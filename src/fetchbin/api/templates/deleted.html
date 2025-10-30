@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FetchBin - Share Deleted</title>
-    </head>
-    <body>
-        <header>
-            <h1>Share Deleted</h1>
-        </header>
-        <main>
-            <p>The share has been permanently deleted.</p>
-            <a href="/">Go to homepage</a>
-        </main>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block title %}Share Deleted{% endblock %}
+{% block content %}
+    <h3 style="margin-bottom: 0.5rem;">Share Deleted</h3>
+    <p>
+        The share has been permanently deleted. <a href="/">Go to homepage</a>.
+    </p>
+{% endblock %}

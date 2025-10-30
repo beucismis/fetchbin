@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FetchBin - Last Outputs</title>
-    </head>
-    <body>
-        <div class="container">
-            <h3>FetchBin - Last Outputs</h3>
-            <ul>
-                {% for output in outputs %}
-                    <li>
-                        ID: <a href="/c/{{ output.public_id }}">{{ output.public_id }}</a>
-                    </li>
-                {% else %}
-                    <li>Not found!</li>
-                {% endfor %}
-            </ul>
-        </div>
-    </body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+    <div class="about">
+        <p>
+            FetchBin is a simple, open-source web application designed to quickly share the output of your favorite command-line "fetch" tools. Just pipe your command to the "fetchbin" CLI, and get a shareable URL instantly.
+        </p>
+    </div>
+    <div class="usage">
+        <h3 style="margin-bottom: 0.5rem;">How to Use</h3>
+        <p>Run any command and share its output using our CLI:</p>
+        <pre class="example-command"><code><b>$</b> fetchbin share <span id="tool-name">fastfetch</span></code></pre>
+    </div>
+    <div class="statistics">
+        <small><strong>{{ shares_last_hour }}</strong> shares in the last hour.</small>
+        <p style="margin-top: 0.5rem; font-size: 1.27rem;">
+            <a href="/outputs">See the latest shares &rarr;</a>
+        </p>
+    </div>
+{% endblock %}
