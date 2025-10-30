@@ -9,7 +9,7 @@
             <small class="command">{{ command or 'N/A' }}</small>
             <a href="/raw/{{ public_id }}" style="font-size: 0.9em; color: #61afef;">View Raw</a>
         </div>
-        <pre class="terminal-output">{{ html_content | safe }}</pre>
+        <pre class="terminal-output" style="max-height: 600px; overflow-y: auto;">{{ html_content | safe }}</pre>
         <div class="card-footer">
             <div class="footer-left">
                 <span class="created-at" data-date="{{ created_at }}"></span>
