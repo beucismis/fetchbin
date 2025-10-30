@@ -1,0 +1,8 @@
+*.pyc
+*.pyo
+*.pyd
+.env
+.git
+.gitignore
+tests/
+__pycache__/
