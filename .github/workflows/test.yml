@@ -32,6 +32,7 @@ jobs:
       - name: Share output and extract delete token
         id: share
         run: |
+          export FETCHBIN_API_URL=https://fetchbin.beucismis.org
           output=$(hatch run cli share -s uname -a)
           echo "$output"
           delete_url=$(echo "$output" | grep 'Delete URL' | awk '{print $3}')
@@ -54,4 +55,5 @@ jobs:
           fi
 
           echo "Attempting to delete with token: $token"
+          export FETCHBIN_API_URL=https://fetchbin.beucismis.org
           hatch run cli delete "$token"
