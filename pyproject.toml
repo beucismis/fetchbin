@@ -34,8 +34,12 @@ dependencies = [
   "jinja2==3.1.4",
   "ansi2html==1.9.2",
   "shortuuid==1.0.13",
-  "requests==2.32.3"
+  "requests==2.32.3",
+  "slowapi==0.1.9"
 ]
+
+[project.scripts]
+fetchbin = "fetchbin.cli.main:main"
 
 [project.urls]
 Source = "https://github.com/beucismis/fetchbin"
@@ -46,6 +50,6 @@ Documentation = "https://github.com/beucismis/fetchbin#readme"
 path = "src/fetchbin/__about__.py"
 
 [tool.hatch.envs.default.scripts]
-format = "black -l 120 . && djlint . --reformat --format-css"
-cli = "PYTHONPATH=src python3 -m fetchbin.cli.main {args}"
+format = "black -l 120 . && djlint . --reformat --format-js --format-css"
+cli = "PYTHONPATH=src FETCHBIN_API_URL=http://localhost:8000 python3 -m fetchbin.cli.main {args}"
 api = "PYTHONPATH=src FETCHBIN_DATA_DIR=data/ uvicorn src.fetchbin.api.main:app --reload"
