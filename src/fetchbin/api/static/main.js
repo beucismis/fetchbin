@@ -157,9 +157,7 @@ function init_rotating_tool_names() {
   const tool_names = [
     "fastfetch",
     "neofetch",
-    "curl",
-    "wget",
-    "htop",
+    "tinyfetch",
     "ps",
     "df",
     "lsblk",
@@ -170,13 +168,11 @@ function init_rotating_tool_names() {
     "lscpu",
     "netstat",
     "ss",
-    "ping",
     "traceroute",
     "dig",
     "nslookup",
     "git status",
     "docker ps",
-    "kubectl get pods",
   ];
 
   let current_index = 0;
