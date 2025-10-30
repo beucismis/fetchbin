@@ -1,6 +1,6 @@
 import time
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -13,8 +13,6 @@ from . import api, models, pages
 
 app = FastAPI()
 settings = models.Settings()
-
-
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
@@ -28,7 +26,6 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
-
 app.add_middleware(SlowAPIMiddleware)
 
 
@@ -54,5 +51,4 @@ async def add_process_time_header(request: Request, call_next):
 
 app.include_router(pages.router)
 app.include_router(api.router, prefix="/api")
-
 app.mount("/static", StaticFiles(directory="src/fetchbin/api/static"), name="static")
