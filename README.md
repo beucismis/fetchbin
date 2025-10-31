@@ -15,13 +15,21 @@ fetchbin share -s <command>  # Share as hidden
 fetchbin delete <token>  # Delete a share
 ```
 
+## Usage with Netcat
+
+You can also pipe any text directly to fetchbin using `netcat` (or `nc`):
+
+```
+echo "Hello, world!" | nc fetchbin.beucismis.org 9999
+```
+
 ## Running with Docker
 
 ```
 git clone https://github.com/beucismis/fetchbin
 cd fetchbin/
 docker build -t fetchbin .
-sudo docker run -d -p 8000:8000 -v ~/data:/data --name fetchbin fetchbin
+sudo docker run -d -p 8000:8000 -p 9999:9999 -v ~/data:/data --name fetchbin fetchbin
 ```
 
 ## Usage
