@@ -2,7 +2,8 @@
 
 FetchBin is a simple and fast way to share your command line outputs with others. Whether you're debugging, showcasing system information, or collaborating with teammates, FetchBin makes it easy to share terminal output in a clean, readable format.
 
-Offical API: https://fetchbin.beucismis.org
+Offical instance: https://fetchbin.beucismis.org \
+API Documentation: https://fetchbin.beucismis.org/api
 
 ## Install and Usage
 
