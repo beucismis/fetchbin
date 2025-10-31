@@ -22,9 +22,11 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
             print(f"[TCP] No content received from {addr}. Closing connection.")
             writer.write(b"Error: Content cannot be empty.\n")
             await writer.drain()
+
             return
 
         http_methods = ["GET ", "POST ", "PUT ", "DELETE ", "HEAD ", "OPTIONS ", "PATCH "]
+
         if any(content.startswith(method) for method in http_methods):
             print(f"[TCP] HTTP request from {addr} rejected.")
             error_response = (
@@ -37,6 +39,7 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
             )
             writer.write(error_response)
             await writer.drain()
+
             return
 
         with Session(engine) as session:
@@ -49,11 +52,8 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
 
         view_url = f"{BASE_URL}/view/{public_id}"
         delete_url = f"{BASE_URL}/delete/{delete_token}"
-
         response_text = f"Success! Your output has been shared.\nURL: {view_url}\nDelete URL: {delete_url}\n"
-
         print(f"[TCP] Saved paste from {addr}. URL: {view_url}")
-
         writer.write(response_text.encode())
         await writer.drain()
 
@@ -70,7 +70,6 @@ async def handle_connection(reader: asyncio.StreamReader, writer: asyncio.Stream
 
 async def serve_tcp():
     server = await asyncio.start_server(handle_connection, TCP_HOST, TCP_PORT)
-
     addr = server.sockets[0].getsockname()
     print(f"[TCP] Server listening on {addr}")
 
