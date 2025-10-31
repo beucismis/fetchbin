@@ -27,6 +27,7 @@ def get_fetch_output_by_public_id(public_id: str, session: Session = Depends(get
 
     if not db_output:
         raise HTTPException(status_code=404, detail="Output not found")
+
     return db_output
 
 
@@ -38,6 +39,7 @@ def get_fetch_output_by_delete_token(
 
     if not db_output:
         raise HTTPException(status_code=404, detail="Share not found")
+
     return db_output
 
 
@@ -70,8 +72,8 @@ def view_outputs_list(request: Request, sort_by: str = "newest", session: Sessio
         statement = statement.order_by(database.FetchOutput.id.desc())
 
     outputs_from_db = session.exec(statement.limit(100)).all()
-
     processed_outputs = []
+
     for output in outputs_from_db:
         processed_outputs.append(
             {

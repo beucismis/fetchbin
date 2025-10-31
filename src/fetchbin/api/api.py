@@ -16,8 +16,10 @@ ansi_converter = Ansi2HTMLConverter(inline=False)
 def get_fetch_output_by_public_id(public_id: str, session: Session = Depends(get_db_session)) -> database.FetchOutput:
     statement = select(database.FetchOutput).where(database.FetchOutput.public_id == public_id)
     db_output = session.exec(statement).first()
+
     if not db_output:
         raise HTTPException(status_code=404, detail="Output not found")
+
     return db_output
 
 
@@ -28,6 +30,7 @@ def _handle_vote(
     vote_type: str,
 ):
     ip_address = request.headers.get("X-Forwarded-For")
+
     if ip_address:
         ip_address = ip_address.split(",")[0].strip()
     else:
@@ -36,7 +39,9 @@ def _handle_vote(
         database.Vote.share_id == db_share.id,
         database.Vote.ip_address == ip_address,
     )
+
     existing_vote = session.exec(vote_statement).first()
+
     if existing_vote:
         raise HTTPException(status_code=409, detail="Already voted")
 
@@ -79,6 +84,7 @@ def share_output(request: Request, share_request: models.ShareRequest, session: 
         raise HTTPException(status_code=500, detail="Failed to create share")
 
     base_url = f"{request.url.scheme}://{request.url.netloc}"
+
     return {
         "url": f"{base_url}/output/{db_output.public_id}",
         "delete_url": f"{base_url}/delete/{db_output.delete_token}",
@@ -109,7 +115,6 @@ def downvote_output(
 def get_output(
     db_share: database.FetchOutput = Depends(get_fetch_output_by_public_id),
 ):
-    """Returns the details of a specific output, including raw and HTML content."""
     return {
         "public_id": db_share.public_id,
         "command": db_share.command,
