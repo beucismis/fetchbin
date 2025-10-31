@@ -15,6 +15,9 @@
         <p style="margin-top: 1rem;">Additional options:</p>
         <pre class="example-command" style="margin-top: 0.5rem;"><code><b>$</b> fetchbin share -s &lt;command&gt;  <span style="color: #9e9e9e;"># Share as hidden</span></code></pre>
         <pre class="example-command" style="margin-top: 0.5rem;"><code><b>$</b> fetchbin delete &lt;token&gt;  <span style="color: #9e9e9e;"># Delete a share</span></code></pre>
+        <h3 style="margin-top: 2rem; margin-bottom: 0.5rem;">Usage with Netcat</h3>
+        <p>You can also pipe any text directly via <code>netcat</code>:</p>
+        <pre class="example-command"><code><b>$</b> echo "Hello, world!" | nc fetchbin.beucismis.org 9999</code></pre>
     </div>
     <div class="statistics">
         <small><strong>{{ shares_last_hour }}</strong> shares in the last hour.</small>
