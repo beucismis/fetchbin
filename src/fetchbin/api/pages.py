@@ -69,7 +69,7 @@ def view_outputs_list(request: Request, sort_by: str = "newest", session: Sessio
     else:
         statement = statement.order_by(database.FetchOutput.id.desc())
 
-    outputs_from_db = session.exec(statement.limit(50)).all()
+    outputs_from_db = session.exec(statement.limit(100)).all()
 
     processed_outputs = []
     for output in outputs_from_db:
