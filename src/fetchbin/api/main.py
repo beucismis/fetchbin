@@ -1,3 +1,4 @@
+import asyncio
 import time
 
 from fastapi import FastAPI, Request
@@ -9,9 +10,34 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 
-from . import api, models, pages
+from . import api, database, models, pages, tcp_server
 
-app = FastAPI()
+tcp_server_task = None
+
+
+async def startup():
+    print("[SYSTEM] Initializing database...")
+    database.create_db_and_tables()
+    print("[SYSTEM] Database initialized.")
+    print("[SYSTEM] Starting TCP server...")
+    loop = asyncio.get_event_loop()
+    global tcp_server_task
+    tcp_server_task = loop.create_task(tcp_server.serve_tcp())
+    print("[SYSTEM] TCP server started.")
+
+
+async def shutdown():
+    print("[SYSTEM] Stopping TCP server...")
+    if tcp_server_task:
+        tcp_server_task.cancel()
+        try:
+            await tcp_server_task
+        except asyncio.CancelledError:
+            print("[SYSTEM] TCP server task cancelled.")
+    print("[SYSTEM] TCP server stopped.")
+
+
+app = FastAPI(on_startup=[startup], on_shutdown=[shutdown])
 settings = models.Settings()
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
