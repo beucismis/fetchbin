@@ -41,11 +41,6 @@ def get_fetch_output_by_delete_token(
     return db_output
 
 
-@router.on_event("startup")
-def on_startup():
-    database.create_db_and_tables()
-
-
 @router.get("/", response_class=HTMLResponse)
 def index(request: Request, session: Session = Depends(get_db_session)):
     one_hour_ago = datetime.now(timezone.utc) - timedelta(hours=1)
@@ -151,9 +146,6 @@ async def about(request: Request) -> HTMLResponse:
 @router.get("/po-tos", response_class=HTMLResponse)
 async def po_tos(request: Request) -> HTMLResponse:
     return templates.TemplateResponse("po-tos.html", {"request": request})
-
-
-1
 
 
 @router.get("/healthcheck", response_class=JSONResponse)
