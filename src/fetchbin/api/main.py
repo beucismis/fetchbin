@@ -28,12 +28,14 @@ async def startup():
 
 async def shutdown():
     print("[SYSTEM] Stopping TCP server...")
+
     if tcp_server_task:
         tcp_server_task.cancel()
         try:
             await tcp_server_task
         except asyncio.CancelledError:
             print("[SYSTEM] TCP server task cancelled.")
+
     print("[SYSTEM] TCP server stopped.")
 
 
